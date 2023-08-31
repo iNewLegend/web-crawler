@@ -1,0 +1,508 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" id="sitemaps_org">
+
+<head>
+
+    <title>sitemaps.org - FAQ</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <meta name="robots" content="all">
+
+    <link rel="stylesheet" type="text/css" href="/sitemaps.css" media="screen, projection">
+<script type="text/javascript" src="/lang.js"></script>
+
+
+    <style type="text/css">
+
+        .style2
+
+        {
+
+            font-family: "Courier New" , Courier, mono;
+
+        }
+
+    </style>
+
+</head>
+
+<body class="faq">
+
+    <a name="top" id="top"></a>
+
+    <div id="container">
+
+        <div id="intro">
+
+            <div id="pageHeader">
+
+                <h1>
+
+                    <a href="http://www.sitemaps.org/">sitemaps.org</a></h1>
+
+            </div>
+
+            <div id="selectionbar">
+
+                <ul>
+
+                    <li class="activelink"><a href="#">FAQ</a></li>
+
+                    <li><a href="protocol.php">Protocol</a></li>
+
+                    <li><a href="index.php">Home</a></li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+        <div id="mainContent">
+
+            <h1>
+
+                Frequently asked questions
+
+            </h1>
+
+            <p>
+
+                <a href="#faq_xml_encoding">How do I represent URLs in the Sitemap?</a></p>
+
+            <p>
+
+                <a href="#faq_output_encoding">Does it matter which character encoding method I use
+
+                    to generate my Sitemap files?</a></p>
+
+            <p>
+
+                <a href="#faq_specifying_time">How do I specify time?</a></p>
+
+            <p>
+
+                <a href="#faq_computing_lastmod">How do I compute lastmod date?</a></p>
+
+            <p>
+
+                <a href="#faq_sitemap_location">Where do I place my Sitemap?</a></p>
+
+            <p>
+
+                <a href="#faq_sitemap_size">How big can my Sitemap be?</a></p>
+
+            <p>
+
+                <a href="#faq_submitting_changes">My site has tens of millions of URLs; can I somehow
+
+                    submit only those that have changed recently?</a></p>
+
+            <p>
+
+                <a href="#faq_after_submission">What do I do after I create my Sitemap?</a></p>
+
+            <p>
+
+                <a href="#faq_url_format">Do URLs in the Sitemap need to be completely specified?</a></p>
+
+            <p>
+
+                <a href="#faq_http_vs_https">My site has both "http" and "https" versions of URLs. Do
+
+                    I need to list both?</a></p>
+
+            <p>
+
+                <a href="#faq_url_encoding">URLs on my site have session IDs in them. Do I need to remove
+
+                    them?</a></p>
+
+            <p>
+
+                <a href="#faq_url_position">Does position of a URL in a Sitemap influence its use?</a></p>
+
+            <p>
+
+                <a href="#faq_frames">Some of the pages on my site use frames. Should I include the
+
+                    frameset URLs or the URLs of the frame contents?</a></p>
+
+            <p>
+
+                <a href="#faq_compression">Can I zip my Sitemaps or do they have to be gzipped?</a></p>
+
+            <p>
+
+                <a href="#faq_priority_and_page_rank">Will the "priority" hint in the XML Sitemap change
+
+                    the ranking of my pages in search results?</a></p>
+
+            <p>
+
+                <a href="#faq_xml_schema">Is there an XML schema that I can validate my XML Sitemap
+
+                    against?</a></p>
+
+            <p>
+
+                <a href="#more">What if I have another question about using the protocol or submitting
+
+                    a Sitemap?</a>
+
+            </p>
+
+            <hr />
+
+            <p class="question">
+
+                Q: <a name="faq_xml_encoding" id="faq_xml_encoding"></a>How do I represent URLs
+
+                in the Sitemap?</p>
+
+            <p>
+
+                As with all XML files, any data values (including URLs) must use <a href="#escaped">
+
+                    entity escape codes</a> for the following characters: ampersand (&amp;), single
+
+                quote ('), double quote ("), less than (&lt;), and greater than (&gt;). You should
+
+                also make sure that all URLs follow the <a href="http://asg.web.cmu.edu/rfc/rfc3986.php">
+
+                    RFC-3986</a> standard for URIs, the <a href="http://www.ietf.org/rfc/rfc3987.txt">RFC-3987</a>
+
+                standard for IRIs, and the <a href="http://www.w3.org/TR/REC-xml/">XML standard</a>.
+
+                If you are using a script to generate your URLs, you can generally URL escape them
+
+                as part of that script. You will still need to entity escape them. For instance,
+
+                the following python script entity escapes http://www.example.com/view?widget=3&amp;count&gt;2</p>
+
+            <pre>
+$ python
+Python 2.2.2 (#1, Feb 24 2003, 19:13:11)  
+&gt;&gt;&gt; import xml.sax.saxutils
+&gt;&gt;&gt; xml.sax.saxutils.escape("http://www.example.com/view?widget=3&amp;count&gt;2")
+</pre>
+
+            <p>
+
+                The resulting URL from the example above is:</p>
+
+            <pre>
+http://www.example.com/view?widget=3&amp;amp;count&amp;gt;2
+</pre>
+
+            <p class="question">
+
+                Q: <a name="faq_output_encoding" id="faq_output_encoding"></a>Does it matter which
+
+                character encoding method I use to generate my Sitemap files?</p>
+
+            <p>
+
+                Yes. Your Sitemap files must use UTF-8 encoding.</p>
+
+            <p class="question">
+
+                Q: <a name="faq_specifying_time" id="faq_specifying_time"></a>How do I specify time?</p>
+
+            <p>
+
+                Use <a href="http://www.w3.org/TR/NOTE-datetime">W3C Datetime encoding</a> for the
+
+                lastmod timestamps and all other dates and times in this protocol. For example,
+
+                2004-09-22T14:12:14+00:00.</p>
+
+            <p>
+
+                This encoding allows you to omit the time portion of the ISO8601 format; for example,
+
+                2004-09-22 is also valid. However, if your site changes frequently, you are encouraged
+
+                to include the time portion so crawlers have more complete information about your
+
+                site.</p>
+
+            <p class="question">
+
+                Q: <a name="faq_computing_lastmod" id="faq_computing_lastmod"></a>How do I compute
+
+                lastmod date?</p>
+
+            <p>
+
+                For static files, this is the actual file update date. You can use the UNIX date
+
+                command to get this date:</p>
+
+            <pre>
+$ date --iso-8601=seconds -u -r /home/foo/www/bar.php
+&gt;&gt; 2004-10-26T08:56:39+00:00
+</pre>
+
+            <p>
+
+                For many dynamic URLs, you may be able to easily compute a lastmod date based on
+
+                when the underlying data was changed or by using some approximation based on periodic
+
+                updates (if applicable). Using even an approximate date or timestamp can help crawlers
+
+                avoid crawling URLs that have not changed. This will reduce the bandwidth and CPU
+
+                requirements for your web servers.</p>
+
+            <p class="question">
+
+                Q: <a name="faq_sitemap_location" id="faq_sitemap_location"></a>Where do I place
+
+                my Sitemap?</p>
+
+            <p>
+
+                It is strongly recommended that you place your Sitemap at the root directory of
+
+                your HTML server; that is, place it at http://example.com/sitemap.xml.</p>
+
+            <p>
+
+                In some situations, you may want to produce different Sitemaps for different paths
+
+                on your site &mdash; e.g., if security permissions in your organization compartmentalize
+
+                write access to different directories.</p>
+
+            <p>
+
+                We assume that if you have the permission to upload http://example.com/path/sitemap.xml,
+
+                you also have permission to report metadata under http://example.com/path/.</p>
+
+            <p>
+
+                All URLs listed in the Sitemap must reside on the same host as the Sitemap. For
+
+                instance, if the Sitemap is located at http://www.example.com/sitemap.xml, it can't
+
+                include URLs from http://subdomain.example.com. If the Sitemap is located at http://www.example.com/myfolder/sitemap.xml,
+
+                it can't include URLs from http://www.example.com.
+
+            </p>
+
+            <p class="backtotop">
+
+                <a href="#top">Back to top</a></p>
+
+            <p class="question">
+
+                Q: <a name="faq_sitemap_size" id="faq_sitemap_size"></a>How big can my Sitemap be?</p>
+
+            <p>
+
+                Sitemaps should be no larger than 50MB (52,428,800 bytes) and can contain a maximum
+
+                of 50,000 URLs. These limits help to ensure that your web server does not get bogged
+
+                down serving very large files. This means that if your site contains more than 50,000
+
+                URLs or your Sitemap is bigger than 50MB, you must create multiple Sitemap files
+
+                and use a <a href="protocol.php#index">Sitemap index file</a>. You should use a
+
+                Sitemap index file even if you have a small site but plan on growing beyond 50,000
+
+                URLs or a file size of 50MB. A Sitemap index file can include up to 50,000 Sitemaps
+
+                and must not exceed 50MB (52,428,800 bytes). You can also use gzip to compress your
+
+                Sitemaps.</p>
+
+            <p class="question">
+
+                Q: <a name="faq_submitting_changes" id="faq_submitting_changes"></a>My site has
+
+                tens of millions of URLs; can I somehow submit only those that have changed recently?</p>
+
+            <p>
+
+                You can list the URLs that change frequently in a small number of Sitemaps and then
+
+                use the <a href="protocol.php#lastmoddef">lastmod</a> tag in your <a href="protocol.php#index">
+
+                    Sitemap index file</a> to identify those Sitemap files. Search engines can then
+
+                incrementally crawl only the changed Sitemaps.</p>
+
+            <p class="question">
+
+                Q: <a name="faq_after_submission" id="faq_after_submission"></a>What do I do after
+
+                I create my Sitemap?</p>
+
+            <p>
+
+                Once you have created your Sitemap, <a href="http://www.sitemaps.org/protocol.php#informing">
+
+                    let search engines know</a> about it by submitting directly to them, pinging
+
+                them, or adding the Sitemap location to your robots.txt file.</p>
+
+            <p class="question">
+
+                Q: <a name="faq_url_format" id="faq_url_format"></a>Do URLs in the Sitemap need
+
+                to be completely specified?</p>
+
+            <p>
+
+                Yes. You need to include the protocol (for instance, http) in your URL. You also
+
+                need to include a trailing slash in your URL if your web server requires one. For
+
+                example, http://www.example.com/ is a valid URL for a Sitemap, whereas www.example.com
+
+                is not.</p>
+
+            <p class="question">
+
+                Q: <a name="faq_http_vs_https" id="faq_http_vs_https"></a>My site has both "http"
+
+                and "https" versions of URLs. Do I need to list both?</p>
+
+            <p class="answers">
+
+                No. Please list only one version of a URL in your Sitemaps. Including multiple versions
+
+                of URLs may result in incomplete crawling of your site.</p>
+
+            <p class="question">
+
+                Q: <a name="faq_url_encoding" id="faq_url_encoding"></a>URLs on my site have session
+
+                IDs in them. Do I need to remove them?</p>
+
+            <p>
+
+                Yes. Including session IDs in URLs may result in incomplete and redundant crawling
+
+                of your site.</p>
+
+            <p class="question">
+
+                Q: <a name="faq_url_position" id="faq_url_position"></a>Does position of a URL in
+
+                a Sitemap influence its use?</p>
+
+            <p>
+
+                No. The position of a URL in the Sitemap is not likely to impact how it is used
+
+                or regarded by search engines.</p>
+
+            <p class="question">
+
+                Q: <a name="faq_frames" id="faq_frames"></a>Some of the pages on my site use frames.
+
+                Should I include the frameset URLs or the URLs of the frame contents?</p>
+
+            <p>
+
+                Please include both URLs.</p>
+
+            <p class="question">
+
+                Q: <a name="faq_compression" id="faq_compression"></a>Can I zip my Sitemaps or do
+
+                they have to be gzipped?</p>
+
+            <p>
+
+                Please use gzip to compress your Sitemaps. Remember, your Sitemap must be no larger
+
+                than 50MB (52,428,800 bytes), whether compressed or not.
+
+            </p>
+
+            <p class="question">
+
+                Q: <a name="faq_priority_and_page_rank" id="faq_priority_and_page_rank"></a>Will
+
+                the "priority" hint in the XML Sitemap change the ranking of my pages in search
+
+                results?</p>
+
+            <p>
+
+                The "priority" hint in your Sitemap only indicates the importance of a particular
+
+                URL relative to other URLs <i>on your own site</i> and does not imply any effect
+
+                on the ranking of your pages in search results.</p>
+
+            <p class="question">
+
+                Q: <a name="faq_xml_schema" id="faq_xml_schema"></a>Is there an XML schema that
+
+                I can validate my XML Sitemap against?</p>
+
+            <p>
+
+                Yes. An XML schema is available for Sitemap files at <a href="http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+                    http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd</a>, and a schema for
+
+                Sitemap index files is available at <a href="http://www.sitemaps.org/schemas/sitemap/0.9/siteindex.xsd">
+
+                    http://www.sitemaps.org/schemas/sitemap/0.9/siteindex.xsd</a>. You can also
+
+                read more about <a href="protocol.php#validating">validating your Sitemap</a>.</p>
+
+            <p class="question">
+
+                Q: <a name="more" id="more"></a>What if I have another question about using the
+
+                protocol or submitting a Sitemap?</p>
+
+            <p>
+
+                See the documentation available from each search engine for more details about submission
+
+                and usage of Sitemaps.</p>
+
+            <p class="backtotop">
+
+                <a href="#top">Back to top</a></p>
+
+            <p class="date">
+
+                Last Updated: Monday, November 21, 2016
+
+            </p>
+
+        </div>
+
+        <!-- closes #maincontent -->
+
+    </div>
+
+    <!-- closes #container -->
+
+    <div id="footer">
+
+        <p>
+
+            <a href="terms.php">Terms and conditions</a></p>
+
+    </div>
+
+</body>
+
+</html>
+
