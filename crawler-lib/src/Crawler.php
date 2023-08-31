@@ -119,11 +119,7 @@ class Crawler
 
     protected function load(): bool
     {
-        $isDebug = $this->options['debug'];
-
-        if ($isDebug) {
-            echo "Loading '$this->target'\n";
-        }
+        $this->debug("Loading '$this->target'");
 
         if (!is_file($this->target)) {
             $result = $this->getFromRemote();
@@ -137,23 +133,19 @@ class Crawler
             $result = $this->document->loadHTMLFile($this->target);
         }
 
-        if ($isDebug) {
-            echo ($result ? "Loaded" : "Failed to load") . " '$this->target'\n";
-        }
+        $this->debug(($result ? "Loaded" : "Failed to load") . " '$this->target'");
 
         return $result;
     }
 
-    protected function getFromRemote(): string|bool {
+    protected function getFromRemote(): string|bool
+    {
         static $client;
 
-        $isDebug = $this->options['debug'];
         $useMemoryCache = $this->options['use_memory_cache'];
 
         if ($useMemoryCache && isset(self::$cacheConnectionFailed[$this->target])) {
-            if ( $isDebug ) {
-                echo "Failed to load from cache '$this->target'\n";
-            }
+            $this->debug("Failed to load from cache '$this->target'");
             return false;
         }
 
@@ -179,15 +171,14 @@ class Crawler
                 self::$cacheConnectionFailed[$this->target] = true;
             }
 
-            if ( $e instanceof ConnectException ||
-                $e instanceof TooManyRedirectsException ) {
-                echo "Failed to load '$this->target' with error: " . $e->getMessage() . "\n";
+            if ($e instanceof ConnectException || $e instanceof TooManyRedirectsException) {
+                $this->debug("Failed to load '$this->target' - " . $e->getMessage());
             } else {
                 throw $e;
             }
         }
 
-        if ( $response?->getStatusCode() === 200 ) {
+        if ($response?->getStatusCode() === 200) {
             return $response->getBody()->getContents();
         }
 
@@ -239,4 +230,10 @@ class Crawler
         return rtrim($result, '/');
     }
 
+    private function debug($message): void
+    {
+        if ($this->options['debug']) {
+            echo $message . "\n";
+        }
+    }
 }
