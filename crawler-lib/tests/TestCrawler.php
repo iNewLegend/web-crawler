@@ -11,11 +11,11 @@ class TestCrawler extends TestCase
         // Arrange.
         $crawler = new MockCrawler("https://unknown-address.not-exist");
 
-        // Assert.
-        $this->expectExceptionMessage("Could not resolve host: unknown-address.not-exist");
-
         // Act.
-        $crawler->doLoad();
+        $result = $crawler->doLoad();
+
+        // Assert.
+        $this->assertFalse($result);
     }
 
     public function test_load__ensure_exist_target()
@@ -30,12 +30,12 @@ class TestCrawler extends TestCase
         $this->assertTrue($result);
     }
 
-    public function test_crawl__ensure_no_duplicates() {
-
+    public function test_crawl__ensure_no_duplicates()
+    {
         $crawler = new MockCrawler(__DIR__ . "/assets/custom/index.html");
 
         // Act.
-        $result = $crawler->crawl(5 );
+        $result = $crawler->crawl(5);
 
         // Assert.
         $this->assertCount(3, $result);
@@ -46,11 +46,11 @@ class TestCrawler extends TestCase
         // Arrange.
         $crawler = new MockCrawler("https://www.index.co.il/");
 
-        // Load `crawl_result_google_html_depth_1.php` asset.
         $expected = require __DIR__ . "/assets/results/index.co.il_0_depth.php";
 
         // Act.
         $result = $crawler->crawl(0);
+        arsort($result);
 
         // Assert.
         $this->assertEquals($expected, $result);
@@ -61,12 +61,28 @@ class TestCrawler extends TestCase
         // Arrange.
         $crawler = new MockCrawler("https://www.index.co.il/");
 
-        // Load `crawl_result_google_html_depth_1.php` asset.
         $expected = require __DIR__ . "/assets/results/index.co.il_1_depth.php";
 
         // Act.
         $result = $crawler->crawl(1);
+        arsort($result);
 
+        // Assert.
+        $this->assertEquals($expected, $result);
+    }
+
+    public function test_crawl__ensure_depth_2()
+    {
+        // Arrange.
+        $crawler = new MockCrawler("https://www.sitemaps.org");
+
+        $expected = require __DIR__ . "/assets/results/sitemaps.org_3_depth.php";
+
+        // Act.
+        $result = $crawler->crawl(2);
+        arsort($result);
+
+        // Assert.
         $this->assertEquals($expected, $result);
     }
 }
