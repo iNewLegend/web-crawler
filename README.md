@@ -4,3 +4,4 @@
 # Commits
 -  2023-08-31 08:00:00 ~ 14:30:00 `New: CrawlerLib - Initial Commit`
 -  2023-08-31 14:30:00 ~ 16:00:00 `Infra: Workflows - Add test workflow`
+-  2023-08-31 14:30:00 ~ 16:00:00 `Tweak: CrawlerLib - Add memory cache`
