@@ -53,13 +53,11 @@ jobs:
         with:
           php-version: ${{ matrix.php_versions }}
 
-      - name: Change directory to crawler-lib
-        run: cd crawler-lib
-
       - name: Install Composer dependencies - normal
         uses: "ramsey/composer-install@v1"
 
       - name: Run Tests
+        working-directory: ./crawler-lib
         run: composer test
 
   test-result:
