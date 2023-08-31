@@ -54,6 +54,8 @@ jobs:
           php-version: ${{ matrix.php_versions }}
 
       - name: Install Composer dependencies - normal
+        working-directory: ./crawler-lib
+        run: composer install --no-interaction --no-progress --no-suggest --prefer-dist
         uses: "ramsey/composer-install@v1"
 
       - name: Run Tests
