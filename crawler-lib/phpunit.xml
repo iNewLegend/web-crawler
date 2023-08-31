@@ -1,0 +1,13 @@
+<phpunit
+        bootstrap="tests/bootstrap.php"
+        colors="true"
+        displayDetailsOnTestsThatTriggerWarnings="false"
+        displayDetailsOnTestsThatTriggerErrors="true"
+        stopOnFailure="true"
+>
+    <testsuites>
+        <testsuite name="CrawlerLib Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
