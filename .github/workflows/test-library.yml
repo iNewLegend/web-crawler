@@ -7,13 +7,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-#  dir:
-#    runs-on: ubuntu-latest
-#    name: list directory
-#    steps:
-#      - name: Run Tests
-#        run: ls -la
-
   file-diff:
     runs-on: ubuntu-latest
     name: File Diff
@@ -41,7 +34,7 @@ jobs:
 
       fail-fast: false
       matrix:
-        php_versions: [ '8.1', '8.2' ]
+        php_versions: [ '8.2' ]
 
     name: PHPUnit - PHP ${{ matrix.php_versions }}
     steps:
