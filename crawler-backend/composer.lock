@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "476b62a145ae3d29c3df9e5337a79f47",
+    "content-hash": "98c6e487326e970b30a989797a1633ec",
     "packages": [
         {
             "name": "brick/math",
@@ -969,6 +969,43 @@
                 }
             ],
             "time": "2023-08-27T10:19:19+00:00"
+        },
+        {
+            "name": "inewlegend/crawler-lib",
+            "version": "dev-backend",
+            "dist": {
+                "type": "path",
+                "url": "../crawler-lib",
+                "reference": "bed1073fc0ecd8a769a0707c4481df40889436cc"
+            },
+            "require": {
+                "ext-dom": "*",
+                "guzzlehttp/guzzle": "^7.8"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Inewlegend\\CrawlerLib\\": "src/",
+                    "Inewlegend\\CrawlerLib\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "phpunit tests/Test*.php"
+                ]
+            },
+            "authors": [
+                {
+                    "name": "Leonid Vinikov",
+                    "email": "czf.leo123@gmail.com"
+                }
+            ],
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "jean85/pretty-package-versions",
@@ -8472,7 +8509,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "inewlegend/crawler-lib": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

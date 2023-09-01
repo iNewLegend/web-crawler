@@ -1,5 +1,3 @@
 {
-    "require": {
-        "mongodb/laravel-mongodb": "^3.9"
-    }
+    "name": "inewlegend/web-crawler"
 }
