@@ -976,10 +976,11 @@
             "dist": {
                 "type": "path",
                 "url": "../crawler-lib",
-                "reference": "bed1073fc0ecd8a769a0707c4481df40889436cc"
+                "reference": "fc915d2e0fbede4415d16139bf3d86ad0939c05c"
             },
             "require": {
                 "ext-dom": "*",
+                "ext-libxml": "*",
                 "guzzlehttp/guzzle": "^7.8"
             },
             "require-dev": {
