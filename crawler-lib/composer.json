@@ -18,7 +18,8 @@
     },
     "require": {
         "ext-dom": "*",
-        "guzzlehttp/guzzle": "^7.8"
+        "guzzlehttp/guzzle": "^7.8",
+        "ext-libxml": "*"
     },
     "scripts": {
         "test": "phpunit tests/Test*.php"
