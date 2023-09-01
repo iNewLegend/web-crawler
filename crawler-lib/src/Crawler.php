@@ -48,7 +48,7 @@ class Crawler
         $useMemoryCache = $this->options['use_memory_cache'];
 
         if ($useMemoryCache && isset(self::$cacheLinks[$this->target])) {
-            echo "Using cache for '$this->target'\n";
+            $this->debug("Using cache for '$this->target'");
             $links = self::$cacheLinks[$this->target];
         } else {
             if (!$this->document->textContent) {
@@ -73,6 +73,9 @@ class Crawler
                 $crawler->crawl($depth - 1, $accumulator);
             }
         }
+
+        // Remove self from accumulator.
+        unset($accumulator[hash('sha256', $this->target)]);
 
         return $accumulator;
     }
