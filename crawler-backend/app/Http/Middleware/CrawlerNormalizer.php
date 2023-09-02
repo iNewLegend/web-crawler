@@ -6,7 +6,9 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-
+/**
+ * Class CrawlerNormalizer, normalize the response for the client.
+ */
 class CrawlerNormalizer
 {
     public function handle(Request $request, Closure $next): Response
