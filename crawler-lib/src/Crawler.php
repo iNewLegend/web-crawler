@@ -74,9 +74,6 @@ class Crawler
             }
         }
 
-        // Remove self from accumulator.
-        unset($accumulator[hash('sha256', $this->target)]);
-
         return $accumulator;
     }
 
