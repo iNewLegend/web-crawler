@@ -34,6 +34,8 @@
   - Run frontend server (in another terminal)
       - $ `composer dev-start-frontend`
 
+  - Enter [http://localhost:4200/](http://localhost:4200/)
+
 # Major commits
 -  2023-08-31 08:00:00 ~ 14:30:00 `New: CrawlerLib - Initial Commit`
 -  2023-08-31 14:30:00 ~ 16:00:00 `Internal: Workflows - Add test workflow`
