@@ -22,7 +22,7 @@
             <td>{{ item.createdAt | date:'yyyy-mm-dd HH:mm' }}</td>
             <td>{{ item.updatedAt | date:'yyyy-mm-dd HH:mm' }}</td>
             <th>
-                <span class="mx-2" title="Reload">🔄</span>
+                <span class="mx-2" title="Reload" (click)="onReloadClick( item ); $event.stopPropagation()">🔄</span>
                 <span class="mx-2" title="Delete" (click)="onDeleteClick(item); $event.stopPropagation()">❌</span>
             </th>
         </tr>

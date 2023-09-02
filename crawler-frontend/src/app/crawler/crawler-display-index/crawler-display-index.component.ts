@@ -37,4 +37,12 @@ export class CrawlerDisplayIndexComponent {
             // this.items = this.items.filter( ( i ) => i.id !== item.id );
         } );
     }
+
+    onReloadClick( item: CrawlerInterfaceWithChildCountable ) {
+        this.crawler.updateCrawler( item.id ).subscribe( () => {
+            // TODO - Lazy, no time.
+            location.hash = '';
+            location.reload();
+        } );
+    }
 }
