@@ -21,8 +21,8 @@
     - $ `cd crawler-backend`
     - $ `cp .env.example .env`
     - $ `vim .env`
-        - Set `MONGODB_URI` to your mongodb connection string
-        - Set `MONGODB_DB` to your mongodb database name
+        - Set `DB_DSN` to your mongodb connection string
+        - Set `DB_DATABASE` to your mongodb database name
         - Save and exit
     - $ Create database collections
       - $ `php artisan migrate`
