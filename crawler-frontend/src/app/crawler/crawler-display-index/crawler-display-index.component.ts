@@ -23,18 +23,6 @@ export class CrawlerDisplayIndexComponent {
             // TODO - Lazy, no time.
             location.hash = '';
             location.reload();
-
-            // // Remove ownerIds from items
-            // this.items = this.items.map( ( i ) => {
-            //     if ( i.ownerIds ) {
-            //         i.ownerIds = i.ownerIds.filter( ( id ) => id !== item.id );
-            //         i.childrenCount = i.ownerIds.length;
-            //     }
-            //
-            //     return i;
-            // } );
-            //
-            // this.items = this.items.filter( ( i ) => i.id !== item.id );
         } );
     }
 
