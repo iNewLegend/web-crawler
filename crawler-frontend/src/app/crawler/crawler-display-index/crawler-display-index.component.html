@@ -1,18 +1,19 @@
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">#</th>
-        <th scope="col">URL</th>
-        <th scope="col">Text associated</th>
-        <th scope="col">Depth</th>
-        <th scope="col">Links count</th>
-        <th scope="col">Created at</th>
-        <th scope="col">Updated at</th>
-        <th scope="col">Actions</th>
-    </tr>
-    </thead>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">URL</th>
+            <th scope="col">Text associated</th>
+            <th scope="col">Depth</th>
+            <th scope="col">Links count</th>
+            <th scope="col">Created at</th>
+            <th scope="col">Updated at</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
 
-    <tbody>
+        <tbody>
         <tr *ngFor="let item of items" class="cursor-pointer" (click)="onClick(item)">
             <th scope="row" >{{ items.indexOf( item ) + 1 }}</th>
             <td class="text-start">{{ item.url }}</td>
@@ -26,5 +27,6 @@
                 <span class="mx-2" title="Delete" (click)="onDeleteClick(item); $event.stopPropagation()">❌</span>
             </th>
         </tr>
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>

@@ -4,10 +4,23 @@
     cursor: pointer;
 }
 
+#crawler-control-holder {
+    max-width: 900px;
+
+    // Submit button
+    button[type="submit"] {
+        max-width: 379px;
+    }
+}
+
 crawler-display, crawler-display-index {
     tr:hover {
         td, th {
             background-color: var(--bs-gray-100);
         }
     }
+}
+
+.container-fluid {
+    max-width: 2000px;
 }
