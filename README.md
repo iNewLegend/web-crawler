@@ -1,5 +1,4 @@
 ![image](https://github.com/iNewLegend/web-crawler/assets/10234691/830714f3-c0ec-4b51-add7-d44b0598cc98)
-![image](https://github.com/iNewLegend/web-crawler/assets/10234691/279734f9-88ae-4729-9175-742be5b38b7c)
 
 # Requirements
 - MongoDB
