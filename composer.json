@@ -8,6 +8,16 @@
         "dev-start-frontend": [
             "Composer\\Config::disableProcessTimeout",
             "cd crawler-frontend && ng serve"
+        ],
+        "clean-vendor": [
+            "rm -rf crawler-lib/vendor",
+            "rm -rf crawler-backend/vendor",
+            "rm -rf crawler-frontend/node_modules"
+        ],
+        "pre-install-cmd": [
+            "cd crawler-lib && composer install",
+            "cd crawler-backend && composer install",
+            "cd crawler-frontend && npm install"
         ]
     }
 }
