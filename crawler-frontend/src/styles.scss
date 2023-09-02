@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+@import "bootstrap/scss/bootstrap";
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+crawler-display, crawler-display-index {
+    tr:hover {
+        td, th {
+            background-color: var(--bs-gray-100);
+        }
+    }
+}
