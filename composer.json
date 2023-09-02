@@ -1,7 +1,13 @@
 {
     "name": "inewlegend/web-crawler",
     "scripts": {
-        "dev-start-backend": "./crawler-backend/artisan serve --port=7777",
-        "dev-start-frontend": "cd crawler-frontend && ng serve"
+        "dev-start-backend": [
+            "Composer\\Config::disableProcessTimeout",
+            "./crawler-backend/artisan serve --port=7777"
+        ] ,
+        "dev-start-frontend": [
+            "Composer\\Config::disableProcessTimeout",
+            "cd crawler-frontend && ng serve"
+        ]
     }
 }
