@@ -1,0 +1,6 @@
+{
+    "name": "inewlegend/web-crawler",
+    "scripts": {
+        "dev-start-backend": "./crawler-backend/artisan serve --port=7777"
+    }
+}

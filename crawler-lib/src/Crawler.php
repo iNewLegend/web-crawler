@@ -14,6 +14,8 @@ const DEFAULT_LOADING_MAX_TIME = 5000;
 
 const DEFAULT_USE_MEMORY_CACHE = true;
 
+const LIBXML_OPTIONS = LIBXML_NOWARNING | LIBXML_NOERROR;
+
 class Crawler
 {
     private array $options;
@@ -46,7 +48,7 @@ class Crawler
         $useMemoryCache = $this->options['use_memory_cache'];
 
         if ($useMemoryCache && isset(self::$cacheLinks[$this->target])) {
-            echo "Using cache for '$this->target'\n";
+            $this->debug("Using cache for '$this->target'");
             $links = self::$cacheLinks[$this->target];
         } else {
             if (!$this->document->textContent) {
@@ -125,12 +127,12 @@ class Crawler
             $result = $this->getFromRemote();
 
             if ($result) {
-                $this->document->loadHTML($result);
+                $this->document->loadHTML($result, LIBXML_OPTIONS);
             }
         } else {
             $this->targetIsFile = true;
 
-            $result = $this->document->loadHTMLFile($this->target);
+            $result = $this->document->loadHTMLFile($this->target, LIBXML_OPTIONS);
         }
 
         $this->debug(($result ? "Loaded" : "Failed to load") . " '$this->target'");
