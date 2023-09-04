@@ -54,9 +54,11 @@ class CrawlerNormalizer
             'depth' => 'depth',
             'owner_ids' => 'ownerIds',
 
+            // Partial.
+            'children' => 'children',
+
             // Not from db.
             'children_count' => 'childrenCount',
-            'children' => 'children'
         ];
 
         foreach ($optional as $key => $value) {

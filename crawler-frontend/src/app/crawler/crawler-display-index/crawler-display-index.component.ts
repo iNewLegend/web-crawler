@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { CrawlerInterfaceWithChildCountable } from "../crawler.model";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CrawlerInterface, CrawlerInterfaceWithChildCountable, CrawlerInterfaceWithChildren } from "../crawler.model";
 import { ApiCrawlerService } from "../../../api/api.crawler.service";
 
 @Component( {
@@ -9,6 +9,10 @@ import { ApiCrawlerService } from "../../../api/api.crawler.service";
 } )
 
 export class CrawlerDisplayIndexComponent {
+    @Output() updateItemEvent = new EventEmitter<CrawlerInterfaceWithChildren>();
+
+    @Output() deleteItemEvent = new EventEmitter<CrawlerInterface>();
+
     @Input() items: CrawlerInterfaceWithChildCountable[] = [];
 
     constructor( private crawler: ApiCrawlerService ) {
@@ -19,18 +23,14 @@ export class CrawlerDisplayIndexComponent {
     }
 
     onDeleteClick( item: CrawlerInterfaceWithChildCountable ) {
-        this.crawler.deleteCrawler( item.id ).subscribe( () => {
-            // TODO - Lazy, no time.
-            location.hash = '';
-            location.reload();
-        } );
+        this.crawler.deleteCrawler( item.id ).subscribe(
+            () => this.deleteItemEvent.emit( item )
+        )
     }
 
     onReloadClick( item: CrawlerInterfaceWithChildCountable ) {
-        this.crawler.updateCrawler( item.id ).subscribe( () => {
-            // TODO - Lazy, no time.
-            location.hash = '';
-            location.reload();
-        } );
+        this.crawler.updateCrawler( item.id ).subscribe( ( item ) =>
+            this.updateItemEvent.emit( item )
+        );
     }
 }

@@ -33,22 +33,6 @@ class CrawlerService
         return $indexLinks;
     }
 
-    public function getLinks(string $url = '', $depth = 0)
-    {
-        // Check if url is already in database
-        $urlModel = $this->url->where('url', $url)->first();
-
-        if ($urlModel) {
-            return $this->getLinksById($urlModel->_id);
-        }
-
-        $content = $this->getFromRemote($url, $depth);
-
-        $this->create($url, $depth, $content);
-
-        return $content;
-    }
-
     public function getLinksById(string $id)
     {
         $urlModel = $this->url->where('_id', $id)->first();
@@ -94,8 +78,11 @@ class CrawlerService
             'depth' => $depth,
         ]);
 
+        // New children collection.
+        $children = new \Illuminate\Support\Collection();
+
         foreach ($content as $key => $value) {
-            $urlModel->create([
+            $model = $urlModel->create([
                 'url' => $value['href'],
                 'url_hash' => $key,
 
@@ -104,7 +91,11 @@ class CrawlerService
                 // Works as array in mongodb.
                 'owner_ids' => [$urlModel->id],
             ]);
+
+            $children->push($model);
         }
+
+        $urlModel['children'] = $children;
 
         return $urlModel;
     }

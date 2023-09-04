@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
-import { CrawlerDisplayState, CrawlerInterfaceWithChildCountable, CrawlerInterfaceWithChildren } from "./crawler.model";
+import {
+    CrawlerDisplayState,
+    CrawlerInterface,
+    CrawlerInterfaceWithChildCountable,
+    CrawlerInterfaceWithChildren
+} from "./crawler.model";
 
 import { ApiCrawlerService } from "../../api/api.crawler.service";
 
@@ -47,6 +52,54 @@ export class CrawlerComponent implements OnInit {
         window.addEventListener( 'hashchange', () => {
             this.selectCrawler( this.getHash() );
         } );
+    }
+
+    newItemEvent( crawler: CrawlerInterfaceWithChildren ) {
+        this.crawlers.push( {
+            id: crawler.id,
+            url: crawler.url,
+            urlHash: crawler.urlHash,
+            text: crawler.text,
+            depth: crawler.depth,
+            ownerIds: crawler.ownerIds,
+
+            createdAt: crawler.createdAt,
+            updatedAt: crawler.updatedAt,
+
+            childrenCount: crawler.children?.length || 0
+        } );
+    }
+
+    updateItemEvent( crawler: CrawlerInterfaceWithChildren ) {
+        const index = this.crawlers.findIndex( ( i ) => i.id === crawler.id );
+
+        if ( index === -1 ) {
+            return this.newItemEvent( crawler );
+        }
+
+        this.crawlers[ index ] = {
+            id: crawler.id,
+            url: crawler.url,
+            urlHash: crawler.urlHash,
+            text: crawler.text,
+            depth: crawler.depth,
+            ownerIds: crawler.ownerIds,
+
+            createdAt: crawler.createdAt,
+            updatedAt: crawler.updatedAt,
+
+            childrenCount: crawler.children?.length || 0
+        };
+    }
+
+    deleteItemEvent( crawler: CrawlerInterface ) {
+        const index = this.crawlers.findIndex( ( i ) => i.id === crawler.id );
+
+        if ( index === -1 ) {
+            return;
+        }
+
+        this.crawlers.splice( index, 1 );
     }
 
     private async selectCrawler( id: string, crawlers = this.crawlers ) {
