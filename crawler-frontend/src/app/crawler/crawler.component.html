@@ -2,8 +2,10 @@
     <div class="row justify-content-center text-center">
         <div id="crawler-control-holder" class="col-md-8 shadow-sm mb-5 pt-3 pb-2">
             <crawler-control
-                    [selectedCrawler]="selectedCrawler"
-                    [shouldDisableCrawlerControl]="shouldDisableCrawlerControl"
+                    [selectedItem]="selectedCrawler"
+                    (newItemEvent)="newItemEvent($event)"
+                    (updateItemEvent)="updateItemEvent($event)"
+                    [shouldDisableControl]="shouldDisableCrawlerControl"
             />
         </div>
 
@@ -17,7 +19,11 @@
             </ng-container>
 
             <ng-container *ngSwitchCase=1>
-                <crawler-display-index [items]="crawlers"/>
+                <crawler-display-index
+                    [items]="crawlers"
+                    (updateItemEvent)="updateItemEvent($event)"
+                    (deleteItemEvent)="deleteItemEvent($event)"
+                />
             </ng-container>
 
             <ng-container *ngSwitchCase=2>

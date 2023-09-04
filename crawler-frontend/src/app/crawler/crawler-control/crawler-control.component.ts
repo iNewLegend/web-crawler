@@ -1,4 +1,4 @@
-import { afterRender, Component, Input } from '@angular/core';
+import { afterRender, Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { FormControl, FormGroup } from "@angular/forms";
 import { CrawlerInterfaceWithChildren } from "../crawler.model";
@@ -12,25 +12,29 @@ import { ApiCrawlerService } from "../../../api/api.crawler.service";
 
 export class CrawlerControlComponent {
 
-    @Input() selectedCrawler: CrawlerInterfaceWithChildren | null = null;
+    @Output() newItemEvent = new EventEmitter<CrawlerInterfaceWithChildren>();
 
-    @Input() shouldDisableCrawlerControl = true;
+    @Output() updateItemEvent = new EventEmitter<CrawlerInterfaceWithChildren>();
+
+    @Input() selectedItem: CrawlerInterfaceWithChildren | null = null;
+
+    @Input() shouldDisableControl = true;
 
     crawlerControlForm = new FormGroup( {
         url: new FormControl( '' ),
         depth: new FormControl( 0 ),
     } );
 
-    constructor( private crawler: ApiCrawlerService) {
+    constructor( private crawler: ApiCrawlerService ) {
         afterRender( () => {
-            if ( this.selectedCrawler ) {
-                this.crawlerControlForm.get( 'url' )?.setValue( this.selectedCrawler.url );
-                this.crawlerControlForm.get( 'depth' )?.setValue( this.selectedCrawler.depth || 0 );
+            if ( this.selectedItem ) {
+                this.crawlerControlForm.get( 'url' )?.setValue( this.selectedItem.url );
+                this.crawlerControlForm.get( 'depth' )?.setValue( this.selectedItem.depth || 0 );
             }
 
             // TODO: Find better solution - When `shouldDisableCrawlerControl` is being changed that disable attribute is not being updated.
             setTimeout( () => {
-                if ( this.shouldDisableCrawlerControl ) {
+                if ( this.shouldDisableControl ) {
                     this.crawlerControlForm.disable();
                 } else {
                     this.crawlerControlForm.enable();
@@ -44,7 +48,7 @@ export class CrawlerControlComponent {
             depth = this.crawlerControlForm.get( 'depth' )?.value || 0;
 
         // If url not start with http:// or https:// error.
-        if ( !url.startsWith( 'http://' ) && !url.startsWith( 'https://' ) ) {
+        if ( ! url.startsWith( 'http://' ) && ! url.startsWith( 'https://' ) ) {
             alert( 'Please enter a valid url' );
             return;
         }
@@ -58,18 +62,14 @@ export class CrawlerControlComponent {
     }
 
     createCrawler( url: string, depth = 0 ) {
-        this.crawler.createCrawler( url,depth ).subscribe( ( crawler ) => {
-            // TODO - Reload page (lazy) - Fix this.
-            location.hash = '';
-            location.reload();
-        } );
+        this.crawler.createCrawler( url, depth ).subscribe(
+            ( crawler ) => this.newItemEvent.emit( crawler )
+        );
     }
 
     updateCrawler( crawler: CrawlerInterfaceWithChildren ) {
-        this.crawler.updateCrawler( crawler.id, this.crawlerControlForm.get( 'depth' )?.value || 0 ).subscribe( ( crawler ) => {
-            // TODO - Reload page (lazy) - Fix this.
-            location.hash = '';
-            location.reload();
-        } );
+        this.crawler.updateCrawler( crawler.id, this.crawlerControlForm.get( 'depth' )?.value || 0 ).subscribe(
+            ( crawler ) => this.updateItemEvent.emit( crawler )
+        );
     }
 }
