@@ -143,7 +143,8 @@ class CrawlerService
             $urlModel->depth = intval($depth);
         }
 
-        // Trigger update, anyway.
+        // Trigger update, anyway - to update `updated_at`.
+        $urlModel->touch();
         $urlModel->save();
 
         $urlModel->children = $children;
