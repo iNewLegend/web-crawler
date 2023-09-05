@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Models\Url;
 use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
 use Inewlegend\CrawlerLib\Crawler;
+use Jenssegers\Mongodb\Eloquent\Builder;
 
 class CrawlerService
 {
@@ -20,20 +22,20 @@ class CrawlerService
         return (new Crawler($url))->crawl($depth);
     }
 
-    public function getIndexLinks()
+    public function getIndex()
     {
         // TODO: Find better way to determine index links.
         $indexLinks = $this->url->where("depth", ">=", 0)->get();
 
         // Add the count of links for each index link.
         foreach ($indexLinks as $indexLink) {
-            $indexLink->children_count = $this->getChildrenCount($indexLink->_id);
+            $indexLink->children_count = $this->getChildrenOf($indexLink->_id)->count();
         }
 
         return $indexLinks;
     }
 
-    public function getLinksById(string $id)
+    public function getById(string $id)
     {
         $urlModel = $this->url->where('_id', $id)->first();
 
@@ -42,12 +44,12 @@ class CrawlerService
             return new Response('Not found', 404);
         }
 
-        $urlModel->children = $this->getChildren($id);
+        $urlModel->children = $this->getChildrenOf($id)->get();
 
         return $urlModel;
     }
 
-    public function getLinksByHash(string $hash)
+    public function getByHash(string $hash)
     {
         $urlModel = $this->url->where('url_hash', $hash)->first();
 
@@ -56,7 +58,7 @@ class CrawlerService
             return new Response('Not found', 404);
         }
 
-        return $this->getLinksById($urlModel->_id);
+        return $this->getById($urlModel->_id);
     }
 
     public function getByUrl(string $url)
@@ -79,7 +81,7 @@ class CrawlerService
         ]);
 
         // New children collection.
-        $children = new \Illuminate\Support\Collection();
+        $children = new Collection();
 
         foreach ($content as $key => $value) {
             $model = $urlModel->create([
@@ -145,7 +147,7 @@ class CrawlerService
         $urlModel->save();
 
         // TODO: Avoid querying again, use memory.
-        $urlModel->children = $this->getChildren($id);
+        $urlModel->children = $this->getChildrenOf($id)->get();
 
         return $urlModel;
     }
@@ -160,7 +162,7 @@ class CrawlerService
         }
 
         // Delete all children.
-        $children = $this->getChildren($id);
+        $children = $this->getChildrenOf($id)->get();
 
         foreach ($children as $child) {
             // Remove owner from child, manually.
@@ -170,7 +172,7 @@ class CrawlerService
             $child->owner_ids = array_values($child->owner_ids);
 
             // If no owners, delete.
-            if ( ! count($child->owner_ids)) {
+            if (!count($child->owner_ids)) {
                 $child->delete();
                 continue;
             }
@@ -179,7 +181,7 @@ class CrawlerService
         }
 
         // TODO - Use memory - If no children, remove depth - lazy no time.
-        if ( ! $this->getChildrenCount($id)) {
+        if (!$this->getChildrenOf($id)->count()) {
             $urlModel->depth = -1;
             $urlModel->save();
         }
@@ -187,13 +189,8 @@ class CrawlerService
         return $urlModel;
     }
 
-    private function getChildren($id)
+    private function getChildrenOf($id): Url|Builder
     {
-        return $this->url->where('owner_ids', 'LIKE', '%' . $id . '%')->get();
-    }
-
-    private function getChildrenCount($id)
-    {
-        return $this->url->where('owner_ids', 'LIKE', '%' . $id . '%')->count();
+        return $this->url->where('owner_ids', 'LIKE', '%' . $id . '%');
     }
 }

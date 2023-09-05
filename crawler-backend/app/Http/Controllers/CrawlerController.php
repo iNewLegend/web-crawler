@@ -34,10 +34,10 @@ class CrawlerController extends Controller
         if (!empty($url)) {
             return $this->crawlerService->getByUrl($url);
         } else if (!empty($hash)) {
-            return $this->crawlerService->getLinksByHash($hash);
+            return $this->crawlerService->getByHash($hash);
         }
 
-        return $this->crawlerService->getIndexLinks();
+        return $this->crawlerService->getIndex();
     }
 
     /**
@@ -45,7 +45,7 @@ class CrawlerController extends Controller
      */
     public function show(string $id)
     {
-        return $this->crawlerService->getLinksById($id);
+        return $this->crawlerService->getById($id);
     }
 
     /**
