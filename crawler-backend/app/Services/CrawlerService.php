@@ -114,12 +114,8 @@ class CrawlerService
         $content = $this->getFromRemote($urlModel->url, $depth);
 
         foreach ($content as $key => $value) {
-            $oldOwnerIds = [];
             $oldChildren = $this->url->where('url_hash', $key)->first();
-
-            if ($oldChildren) {
-                $oldOwnerIds = $oldChildren->toArray()['owner_ids'];
-            }
+            $oldOwnerIds = $oldChildren?->toArray() ? ['owner_ids'] : [];
 
             // Merge old `owner_ids` with new `owner_ids`.
             $ownerIds = array_merge($oldOwnerIds, [$urlModel->id]);
