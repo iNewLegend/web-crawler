@@ -111,6 +111,8 @@ class CrawlerService
             return new Response('Not found', 404);
         }
 
+        $children = new Collection();
+
         $content = $this->getFromRemote($urlModel->url, $depth);
 
         foreach ($content as $key => $value) {
@@ -121,7 +123,7 @@ class CrawlerService
             $ownerIds = array_merge($oldOwnerIds, [$urlModel->id]);
 
             // TODO - "This database engine does not support upserts."
-            $this->url->updateOrCreate([
+            $result = $this->url->updateOrCreate([
                 'url' => $value['href'],
                 'url_hash' => $key,
             ], [
@@ -130,6 +132,8 @@ class CrawlerService
                 // Works as array in mongodb.
                 'owner_ids' => $ownerIds,
             ]);
+
+            $children->push($result);
         }
 
         if (!isset($urlModel->depth)) {
@@ -142,8 +146,7 @@ class CrawlerService
         // Trigger update, anyway.
         $urlModel->save();
 
-        // TODO: Avoid querying again, use memory.
-        $urlModel->children = $this->getChildrenOf($id)->get();
+        $urlModel->children = $children;
 
         return $urlModel;
     }
