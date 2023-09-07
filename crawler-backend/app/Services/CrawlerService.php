@@ -152,7 +152,18 @@ class CrawlerService
         return $urlModel;
     }
 
-    public function delete($id)
+    /**
+     * Delete a URL and its associated child URLs.
+     *
+     * Deletes a URL by its ID and, if it has child URLs, removes them as well.
+     * If the URL is not found, it returns a 404 Response.
+     *
+     * @param string $id The ID of the URL to delete.
+     *
+     * @return array|Response An array containing the deleted URL ID and the IDs of its deleted child URLs,
+     * or a 404 Response if the URL was not found.
+     */
+    public function delete(string $id): array|Response
     {
         $urlModel = $this->url->where('_id', $id)->first();
 
@@ -161,32 +172,74 @@ class CrawlerService
             return new Response('Not found', 404);
         }
 
-        // Delete all children.
-        $children = $this->getChildrenOf($id)->get();
+        $result = [];
 
-        foreach ($children as $child) {
+        $owner = new class ($this->getChildrenOf($id)) {
+            private int $initialCount;
+
+            private Collection $children;
+
+            private Collection $deletedChildren;
+
+            public function __construct($builder)
+            {
+                $this->children = $builder->get();
+
+                $this->initialCount = $builder->count();
+
+                $this->deletedChildren = new Collection();
+            }
+
+            public function delete(Url $child): void
+            {
+                $this->deletedChildren->push($child);
+
+                $child->delete();
+            }
+
+            public function getChildren(): Collection
+            {
+                return $this->children;
+            }
+
+            public function getDeletedChildren(): Collection
+            {
+                return $this->deletedChildren;
+            }
+
+            public function hasChildren(): bool
+            {
+                return $this->initialCount <> $this->deletedChildren->count();
+            }
+        };
+
+        // Delete all children.
+        foreach ($owner->getChildren() as $child) {
             // Remove owner from child, manually.
             $child->owner_ids = array_diff($child->owner_ids, [$urlModel->id]);
 
             // Reindex array - will be object in db without.
             $child->owner_ids = array_values($child->owner_ids);
 
-            // If no owners, delete.
-            if (!count($child->owner_ids)) {
-                $child->delete();
+            // If the child is not a parent(index link) and there are no owners, delete.
+            if ((!isset($child->depth) || $child->depth < 0) && !count($child->owner_ids)) {
+                $owner->delete($child);
                 continue;
             }
 
             $child->save();
         }
 
-        // TODO - Use memory - If no children, remove depth - lazy no time.
-        if (!$this->getChildrenOf($id)->count()) {
+        if (!$owner->hasChildren()) {
+            $result[] = $id;
+
             $urlModel->depth = -1;
             $urlModel->save();
         }
 
-        return $urlModel;
+        return array_merge($result,
+            $owner->getDeletedChildren()->pluck('_id')->toArray()
+        );
     }
 
     private function getChildrenOf($id): Url|Builder
