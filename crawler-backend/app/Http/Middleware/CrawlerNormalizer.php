@@ -21,18 +21,20 @@ class CrawlerNormalizer
              */
             $context = $response->getOriginalContent();
 
-            if (!$context instanceof \Illuminate\Support\Collection) {
+            if ( $context instanceof \App\Models\Url ) {
                 $stringify = json_encode($this->mapper($context));
 
                 return new Response($stringify, $response->getStatusCode(), $response->headers->all());
             }
 
-            // Map the collection to a new collection
-            $result = $context->map(function ($item) {
-                return $this->mapper($item);
-            });
+            if ( $context instanceof \Illuminate\Support\Collection ) {
+                // Map the collection to a new collection
+                $result = $context->map(function ($item) {
+                    return $this->mapper($item);
+                });
 
-            return new Response($result, $response->getStatusCode(), $response->headers->all());
+                return new Response($result, $response->getStatusCode(), $response->headers->all());
+            }
         }
 
         return $response;

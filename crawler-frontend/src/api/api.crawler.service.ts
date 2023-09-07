@@ -40,7 +40,7 @@ export class ApiCrawlerService {
         return this.http.put( '/crawler/' + id + "?depth=" + depth, {} ) as Observable<CrawlerInterfaceWithChildren>;
     }
 
-    deleteCrawler( id: string ): Observable<CrawlerInterfaceWithChildren> {
-        return this.http.delete( '/crawler/' + id ) as Observable<CrawlerInterfaceWithChildren>;
+    deleteCrawler( id: string ): Observable<string[]> {
+        return this.http.delete( '/crawler/' + id ) as Observable<string[]>;
     }
 }

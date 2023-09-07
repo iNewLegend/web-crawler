@@ -24,7 +24,11 @@ export class CrawlerDisplayIndexComponent {
 
     onDeleteClick( item: CrawlerInterfaceWithChildCountable ) {
         this.crawler.deleteCrawler( item.id ).subscribe(
-            () => this.deleteItemEvent.emit( item )
+            ( deletedItemsId ) => {
+                if ( deletedItemsId.includes( item.id ) ) {
+                    this.deleteItemEvent.emit( item );
+                }
+            },
         )
     }
 
